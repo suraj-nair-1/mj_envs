@@ -81,6 +81,7 @@ class BaseV0(env_base.MujocoEnv):
         if self.sim.model.na:
             # find muscle actuators
             muscle_act_ind = self.sim.model.actuator_dyntype==3
+            a[muscle_act_ind] = 1.0/(1.0+np.exp(-5.0*(a[muscle_act_ind]-0.5)))
             # TODO: actuator space may not always be (0,1) for muscle or (-1, 1) for others
             isNormalized = False # refuse internal reprojection as we explicitely did it here
         else:
