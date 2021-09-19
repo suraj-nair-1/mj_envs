@@ -46,7 +46,7 @@ register(id='FingerReachMuscleRandom-v0',
         }
     )
 
-# Simple models posing ==============================
+# Elbow posing ==============================
 register(id='ElbowPose1D1MRandom-v0',
         entry_point='mj_envs.envs.biomechanics.pose_v0:PoseEnvV0',
         max_episode_steps=100,
@@ -249,7 +249,7 @@ register(id='ITPoseMuscleRandom-v0',
         }
     )
 
-# Remove this one the ASL envs stablizes
+# Remove this when the ASL envs stablizes
 register(id='HandPoseAMuscleFixed-v0',
         entry_point='mj_envs.envs.biomechanics.pose_v0:PoseEnvV0',
         max_episode_steps=100,
@@ -316,8 +316,8 @@ register(id='HandPoseMuscleRandom-v0',
 
 
 # Hand-Joint key turn ==============================
-register(id='IFTHKeyTurnFixed-v0',
-        entry_point='mj_envs.envs.biomechanics.key_turn_v0:KeyTurnFixedEnvV0',
+register(id='IFTHKeyTurnFixed-v0', #remove
+        entry_point='mj_envs.envs.biomechanics.key_turn_v0:KeyTurnEnvV0',
         max_episode_steps=200,
         kwargs={
             'model_path': curr_dir+'/assets/hand/Index_Thumb_keyturn_v0.xml',
@@ -325,16 +325,17 @@ register(id='IFTHKeyTurnFixed-v0',
         }
     )
 
-register(id='IFTHKeyTurnRandom-v0', # Hand init pose is random
-        entry_point='mj_envs.envs.biomechanics.key_turn_v0:KeyTurnRandomEnvV0',
+register(id='IFTHKeyTurnRandom-v0', #remove
+        entry_point='mj_envs.envs.biomechanics.key_turn_v0:KeyTurnEnvV0',
         max_episode_steps=200,
         kwargs={
             'model_path': curr_dir+'/assets/hand/Index_Thumb_keyturn_v0.xml',
-            'normalize_act': True
+            'normalize_act': True,
+            'key_init_range':(-np.pi/2, np.pi/2)
         }
     )
 register(id='HandKeyTurnFixed-v0',
-        entry_point='mj_envs.envs.biomechanics.key_turn_v0:KeyTurnFixedEnvV0',
+        entry_point='mj_envs.envs.biomechanics.key_turn_v0:KeyTurnEnvV0',
         max_episode_steps=200,
         kwargs={
             'model_path': curr_dir+'/assets/hand/2nd_hand_Index_Thumb_keyturn.xml',
@@ -342,12 +343,13 @@ register(id='HandKeyTurnFixed-v0',
         }
     )
 
-register(id='HandKeyTurnRandom-v0', # Hand init pose is random
-        entry_point='mj_envs.envs.biomechanics.key_turn_v0:KeyTurnRandomEnvV0',
+register(id='HandKeyTurnRandom-v0',
+        entry_point='mj_envs.envs.biomechanics.key_turn_v0:KeyTurnEnvV0',
         max_episode_steps=200,
         kwargs={
             'model_path': curr_dir+'/assets/hand/2nd_hand_Index_Thumb_keyturn.xml',
-            'normalize_act': True
+            'normalize_act': True,
+            'key_init_range':(-np.pi/2, np.pi/2)
         }
     )
 

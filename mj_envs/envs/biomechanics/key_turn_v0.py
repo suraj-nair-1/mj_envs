@@ -5,7 +5,7 @@ import gym
 from mj_envs.envs.biomechanics.base_v0 import BaseV0
 
 
-class KeyTurnFixedEnvV0(BaseV0):
+class KeyTurnEnvV0(BaseV0):
 
     DEFAULT_OBS_KEYS = ['hand_qpos', 'hand_qvel', 'key_qpos', 'key_qvel', 'IFtip_approach', 'THtip_approach']
     DEFAULT_RWD_KEYS_AND_WEIGHTS= {
@@ -43,7 +43,8 @@ class KeyTurnFixedEnvV0(BaseV0):
                     weighted_reward_keys=weighted_reward_keys,
                     normalize_act=normalize_act,
                     rwd_viz=False,
-                    seed=seed)
+                    seed=seed,
+                    **kwargs)
 
     def _setup(self,
             obs_keys:list,
@@ -51,11 +52,12 @@ class KeyTurnFixedEnvV0(BaseV0):
             normalize_act,
             rwd_viz,
             seed,
+            key_init_range:tuple=(0,0)
         ):
         self.keyhead_sid = self.sim.model.site_name2id("keyhead")
         self.IF_sid = self.sim.model.site_name2id("IFtip")
         self.TH_sid = self.sim.model.site_name2id("THtip")
-        # self.init_qpos = self.sim.model.key_qpos[0]
+        self.key_init_range = key_init_range
 
         super()._setup(obs_keys=obs_keys,
                     weighted_reward_keys=weighted_reward_keys,
@@ -115,11 +117,9 @@ class KeyTurnFixedEnvV0(BaseV0):
         rwd_dict['dense'] = np.sum([wt*rwd_dict[key] for key, wt in self.rwd_keys_wt.items()], axis=0)
         return rwd_dict
 
-
-class KeyTurnRandomEnvV0(KeyTurnFixedEnvV0):
-
-    def reset(self):
-        # randomize init pos
-        jnt_init = self.np_random.uniform(high=self.sim.model.jnt_range[:,1], low=self.sim.model.jnt_range[:,0])
-        obs = super().reset(reset_qpos=jnt_init)
-        return obs
+    def reset(self, reset_qpos=None, reset_qvel=None):
+        qpos = self.init_qpos.copy() if reset_qpos is None else reset_qpos
+        qvel = self.init_qvel.copy() if reset_qvel is None else reset_qvel
+        qpos[-1] = self.np_random.uniform(low=self.key_init_range[0], high=self.key_init_range[1])
+        self.robot.reset(qpos, qvel)
+        return self.get_obs()
