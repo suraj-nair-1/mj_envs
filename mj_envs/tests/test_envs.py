@@ -47,6 +47,7 @@ class TestEnvs(unittest.TestCase):
             'ElbowPose1D1MRandom-v0', 'ElbowPose1D6MRandom-v0',
             'ElbowPose1D6MExoRandom-v0',
 
+            'ElbowPose1D6M_SoftExo_Random-v0', 'ElbowPose1D6MExoRandom_1kg-v0', 'ElbowPose1D6MExoRandom_2kg-v0',
 
             'IFTHKeyTurnFixed-v0', 'IFTHKeyTurnRandom-v0',
             'HandKeyTurnFixed-v0', 'HandKeyTurnRandom-v0',
